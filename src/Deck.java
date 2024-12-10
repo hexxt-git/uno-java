@@ -1,4 +1,4 @@
-import Cards.Card;
+import cards.Card;
 
 class Deck {
     private Card[] cards;

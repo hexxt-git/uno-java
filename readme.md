@@ -31,6 +31,17 @@ To get started with the Uno Java Game, follow these steps:
 
 
 ## How to Play
+
+### Cards
+Numbers: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 (10 cards per color)
+Action Cards:
+    - 2 "Skip" cards
+    - 2 "Reverse" cards
+    - 2 "Draw Two" cards
+
+Special Cards:
+    - 4 "Wild" cards (can be played on any color, and you can choose the next color to be played)
+    - 4 "Wild Draw Four" cards (can be played on any color, and the next player draws 4 cards and skips their turn)
 // TODO
 
 ## Contributing

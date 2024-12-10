@@ -1,4 +1,7 @@
-package Cards;
+package cards;
+
+import constants.Action;
+import constants.Color;
 
 public class ActionCard extends Card {
     public Action action;
@@ -9,6 +12,6 @@ public class ActionCard extends Card {
     }
 
     public String toString() {
-        return String.format("[%s %s]", color, action);
+        return String.format("%s[%s %s]\033[0m", getColor().consoleColor, getColor(), action);
     }
 }
