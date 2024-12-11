@@ -5,7 +5,7 @@ public enum Color {
     Green("\033[0;32m"),
     Blue("\033[0;34m"),
     Yellow("\033[0;33m"),
-    Wild("\033[0;30m"); // TODO: give white background
+    Wild("\033[0;35m");
 
     public final String consoleColor;
 

@@ -1,18 +1,37 @@
-import cards.ActionCard;
+import player.HumanPlayer;
+import player.Player;
 import cards.Card;
-import cards.NumberCard;
-import constants.Action;
-import constants.Color;
 
 class UnoGame {
     Player[] players;
+    Deck deck;
+    Card[] placedCards; // operate as a queue
+    boolean direction;
+    int turn; // index of current
+
+    public UnoGame(Player[] players) {
+        this.players = players;
+        this.deck = new Deck();
+        this.placedCards = new Card[108];
+        this.direction = true;
+    }
+
+    public void start() {
+        System.out.println("New deck");
+        System.out.println(deck);
+        deck.shuffle();
+        System.out.println("\nShuffled deck");
+        System.out.println(deck);
+    }
 
     public static void main(String[] Args) {
-        Card testCard = new NumberCard(Color.Red, 10);
-        Card testCard2 = new ActionCard(Color.Blue, Action.Reverse);
-        
-        System.out.println(testCard);
-        System.out.println(testCard2);
-
+        Player[] players = {
+                new HumanPlayer("Alice"),
+                new HumanPlayer("Bob"),
+                new HumanPlayer("Charlie"),
+                new HumanPlayer("Diana")
+        };
+        UnoGame game = new UnoGame(players);
+        game.start();
     }
 }

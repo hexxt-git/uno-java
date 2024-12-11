@@ -18,6 +18,26 @@
 ||                5.[Blue 8] 6.[Yellow 3]                              ||
 ||                                                                     ||
 ||    Actions:                                                         ||
-||               q.quit  r.reset  s.save                               ||
+||               q.quit  r.reset  s.save  h.help                       ||
 ||                                                                     ||
 ++=====================================================================++
+
+Project roadmap
+// main  menu play / help / credits
+// setup menu set players (bot/human)
+// set direction randomly
+// init deck and shuffle
+// distribute cards
+// main loop
+// -- check game over state
+// -- display game state
+// -- if player can't play
+// -- -- draw card (prompt to first)
+// -- -- if deck is empty pop from queue all but one and shuffle
+// -- if player is bot play and continue
+// -- if player is human
+// -- -- listen for keyboard input
+// -- -- if viable input apply and continue
+// -- -- else display error and repeat
+// display end game state and winner
+// keep exact logs of every input and result
