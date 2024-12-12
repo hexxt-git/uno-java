@@ -32,7 +32,10 @@ class Deck {
 
     }
 
-    public Card draw() {
+    public Card draw(CardStack placedCards) {
+        if (cards.top() == null) {
+            resetAndKeepTop(placedCards);
+        }
         return cards.pop();
     }
 

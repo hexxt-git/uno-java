@@ -24,6 +24,8 @@ public class Card {
     }
 
     public boolean isValidPlay(Card other) {
+        if (other == null)
+            return true;
         if (this.getColor() == Color.Wild)
             return true;
         return this.getColor() == other.getColor();

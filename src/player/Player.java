@@ -1,49 +1,41 @@
 package player;
 
 import cards.Card;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Player {
     private String name;
-    private Card[] hand;
+    private List<Card> hand;
 
     public Player(String name) {
         this.name = name;
+        this.hand = new ArrayList<>();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Card[] getHand() {
+    public List<Card> getHand() {
         return hand;
-    }
-
-    public void setHand(Card[] hand) {
-        this.hand = hand;
     }
 
     public String getName() {
         return name;
     }
 
-    public final boolean canPlay(Card topCard) {
-        for (Card card : hand) {
-            if (card.isValidPlay(topCard)) {
-                return true;
-            }
-        }
-        return false;
+    public final void draw(Card card) {
+        hand.add(card);
     }
 
     public abstract Card play(Card topCard);
 
-    public final Card PlayCard(Card card) {
-        for (int i = 0; i < hand.length; i++) {
-            if (hand[i].equals(card)) {
-                hand[i] = null;
-                return card;
-            }
+    protected final Card playCard(Card card) {
+        if (hand.remove(card)) {
+            return card;
         }
+
         throw new IllegalArgumentException("Card not found in hand");
+    }
+
+    public String toString() {
+        return String.format("%s: %s", name, hand);
     }
 }

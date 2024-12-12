@@ -1,57 +1,57 @@
-import player.HumanPlayer;
+import player.BotPlayer;
 import player.Player;
+import cards.Card;
 
 class UnoGame {
     Player[] players;
     Deck deck;
-    CardStack placedCards; // operate as a queue
+    CardStack placedCards;
     boolean direction;
-    int turn; // index of current
+    int currentTurn;
 
     public UnoGame(Player[] players) {
         this.players = players;
         this.deck = new Deck();
         this.placedCards = new CardStack();
         this.direction = true;
-        this.turn = 0;
+        this.currentTurn = 0;
     }
 
     public void start() {
-        // this is a test
-        System.out.println("New deck:");
-        System.out.println(deck);
-        System.out.println(placedCards);
         deck.shuffle();
-        System.out.println("\nShuffled deck");
-        System.out.println(deck);
+        for (Player player : players) {
+            for (int i = 0; i < 7; i++) {
+                player.draw(deck.draw(placedCards));
+            }
+            System.out.println(player);
+        }
 
-        System.out.println(placedCards);
-        placedCards.push(deck.draw());
-        System.out.println(placedCards);
-        placedCards.push(deck.draw());
-        System.out.println(placedCards);
-        placedCards.push(deck.draw());
-        System.out.println(placedCards);
+        for (int i = 0; i < 1000; i++) { // TODO: TEMP CODE
+            Card play = players[currentTurn].play(placedCards.top());
+            if (play == null) {
+                Card drawnCard = deck.draw(placedCards);
+                players[currentTurn].draw(drawnCard);
+                System.out.println(players[currentTurn].getName() + " draws " + drawnCard);
+            } else {
+                placedCards.push(play);
+                System.out.println(players[currentTurn].getName() + " plays " + play + " on " + placedCards.top());
+            }
 
-        System.out.println("\nAfter draw:");
-        System.out.println(deck);
-        System.out.println(placedCards);
+            if (players[currentTurn].getHand().size() == 0) {
+                System.out.println(players[currentTurn].getName() + " wins!");
+                break;
+            }
+            currentTurn = (currentTurn + (direction ? 1 : -1)) % players.length;
+        }
 
-        deck.resetAndKeepTop(placedCards);
-
-        System.out.println("\nAfter reset:");
-        System.out.println(deck);
-        System.out.println(placedCards);
-
-        turn = (turn + (direction ? 1 : -1)) % players.length;
     }
 
     public static void main(String[] Args) {
         Player[] players = {
-                new HumanPlayer("Alice"),
-                new HumanPlayer("Bob"),
-                new HumanPlayer("Charlie"),
-                new HumanPlayer("Diana")
+                new BotPlayer("Alice"),
+                new BotPlayer("Bob"),
+                new BotPlayer("Charlie"),
+                new BotPlayer("Diana")
         };
         UnoGame game = new UnoGame(players);
         game.start();
