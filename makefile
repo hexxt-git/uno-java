@@ -1,4 +1,4 @@
-all: compile run
+all: clear compile run clean
 
 # The compile command finds all Java source files in the src directory
 # and compiles them into the bin directory.
@@ -7,6 +7,9 @@ compile:
 
 run:
 	java -cp bin UnoGame
+
+clear:
+	clear
 
 clean:
 	rm -rf bin/*.class

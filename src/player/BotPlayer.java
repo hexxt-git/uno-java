@@ -8,9 +8,9 @@ public class BotPlayer extends Player {
     }
 
     public Card play(Card topCard) {
+        // TODO: evaluate each play with score and play the best one
         for (Card card : getHand()) {
             if (card.isValidPlay(topCard)) {
-                // TODO: Implement smart bot logic
                 PlayCard(card);
                 return card;
             }

@@ -26,13 +26,22 @@ public abstract class Player {
         return name;
     }
 
+    public final boolean canPlay(Card topCard) {
+        for (Card card : hand) {
+            if (card.isValidPlay(topCard)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public abstract Card play(Card topCard);
 
-    public final void PlayCard(Card card) {
+    public final Card PlayCard(Card card) {
         for (int i = 0; i < hand.length; i++) {
             if (hand[i].equals(card)) {
                 hand[i] = null;
-                break;
+                return card;
             }
         }
         throw new IllegalArgumentException("Card not found in hand");

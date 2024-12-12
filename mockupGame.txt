@@ -1,9 +1,9 @@
 ++============================ UNO GAME ===============================++
 ||                                                                     ||
-||    Player 1: Aymen                                                  ||
-||    Player 2: Salah                                                  ||
-||    Player 3: Jhon Doe (Bot)                                         ||
-||    Player 4: Jane Smith (Bot)                                       ||
+||      Player 1: Aymen                                                ||
+||    > Player 2: Salah                                                ||
+||      Player 3: Jhon Doe (Bot)                                       ||
+||      Player 4: Jane Smith (Bot)                                     ||
 ||                                                                     ||
 ||    Stack (40):                                                      ||
 ||                              [Red 9]                                ||
@@ -18,7 +18,7 @@
 ||                5.[Blue 8] 6.[Yellow 3]                              ||
 ||                                                                     ||
 ||    Actions:                                                         ||
-||               q.quit  r.reset  s.save  h.help                       ||
+||               q.quit  r.reset  s.save  h.help  d.debug              ||
 ||                                                                     ||
 ++=====================================================================++
 
