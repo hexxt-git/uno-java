@@ -9,6 +9,10 @@ public class CardStack {
         this.cards = new ArrayList<Card>();
     }
 
+    public int size() {
+        return cards.size();
+    }
+
     public void push(Card card) {
         if (card != null) {
             cards.add(card);

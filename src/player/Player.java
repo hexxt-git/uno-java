@@ -1,6 +1,8 @@
 package player;
 
 import cards.Card;
+import constants.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public abstract class Player {
     }
 
     public abstract Card play(Card topCard);
+    public abstract Color chooseColor();
 
     protected final Card playCard(Card card) {
         if (hand.remove(card)) {

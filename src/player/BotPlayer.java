@@ -1,6 +1,7 @@
 package player;
 
 import cards.Card;
+import constants.Color;
 
 public class BotPlayer extends Player {
     public BotPlayer(String name) {
@@ -15,6 +16,10 @@ public class BotPlayer extends Player {
             }
         }
         return null;
+    }
+
+    public Color chooseColor() {
+        return Color.values()[(int) (Math.random() * 4)];
     }
 
 }

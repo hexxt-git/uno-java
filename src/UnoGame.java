@@ -1,6 +1,8 @@
 import player.BotPlayer;
 import player.Player;
+import cards.ActionCard;
 import cards.Card;
+import constants.Color;
 
 class UnoGame {
     Player[] players;
@@ -25,25 +27,87 @@ class UnoGame {
             }
             System.out.println(player);
         }
+        System.out.println("");
 
-        for (int i = 0; i < 1000; i++) { // TODO: TEMP CODE
-            Card play = players[currentTurn].play(placedCards.top());
-            if (play == null) {
-                Card drawnCard = deck.draw(placedCards);
-                players[currentTurn].draw(drawnCard);
-                System.out.println(players[currentTurn].getName() + " draws " + drawnCard);
-            } else {
-                placedCards.push(play);
-                System.out.println(players[currentTurn].getName() + " plays " + play + " on " + placedCards.top());
-            }
-
-            if (players[currentTurn].getHand().size() == 0) {
-                System.out.println(players[currentTurn].getName() + " wins!");
+        while (true) {
+            if (playTurn()) {
                 break;
             }
-            currentTurn = (currentTurn + (direction ? 1 : -1)) % players.length;
+        }
+    }
+
+    private boolean playTurn() {
+        Card top = placedCards.top();
+        Card play = players[currentTurn].play(top);
+
+        if (play == null) {
+            Card drawnCard = deck.draw(placedCards);
+            players[currentTurn].draw(drawnCard);
+            System.out.println(players[currentTurn].getName() + " draws " + drawnCard);
+        } else {
+            if (!play.isValidPlay(top)) {
+                throw new RuntimeException("Invalid play: " + play + " on " + top);
+            }
+            placedCards.push(play);
+            System.out.println(players[currentTurn].getName() + " plays " + play + " on " + top);
+
+            if (play.getColor() == Color.Wild) {
+                Color chosenColor = players[currentTurn].chooseColor();
+                play.setColor(chosenColor);
+                System.out.println(players[currentTurn].getName() + " chooses " + chosenColor);
+            }
+            if (play instanceof ActionCard) {
+                handleActionCard((ActionCard) play);
+            }
         }
 
+        if (players[currentTurn].getHand().size() == 0) {
+            System.out.println(players[currentTurn].getName() + " wins!");
+            return true;
+        }
+        currentTurn = next(currentTurn);
+        return false;
+    }
+
+    private void handleActionCard(ActionCard actionCard) {
+        switch (actionCard.action) {
+            case Skip:
+                System.out.println(players[currentTurn].getName() + " plays Skip. "
+                        + players[next(currentTurn)].getName() + " is skipped.");
+                currentTurn = next(currentTurn);
+                break;
+            case Reverse:
+                System.out.println(players[currentTurn].getName() + " plays Reverse. Direction is now "
+                        + (direction ? "clockwise." : "counterclockwise."));
+                direction = !direction;
+                break;
+            case Draw2:
+                System.out.println(players[currentTurn].getName() + " plays Draw2. "
+                        + players[next(currentTurn)].getName() + " draws 2 cards.");
+                for (int j = 0; j < 2; j++) {
+                    Card drawnCard = deck.draw(placedCards);
+                    players[next(currentTurn)].draw(drawnCard);
+                    System.out.println(players[next(currentTurn)].getName() + " draws " + drawnCard);
+                }
+                currentTurn = next(currentTurn);
+                break;
+            case Draw4:
+                System.out.println(players[currentTurn].getName() + " plays Draw4. "
+                        + players[next(currentTurn)].getName() + " draws 4 cards.");
+                for (int j = 0; j < 4; j++) {
+                    Card drawnCard = deck.draw(placedCards);
+                    players[next(currentTurn)].draw(drawnCard);
+                    System.out.println(players[next(currentTurn)].getName() + " draws " + drawnCard);
+                }
+                currentTurn = next(currentTurn);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private int next(int index) {
+        return (index + (direction ? 1 : -1) + players.length) % players.length;
     }
 
     public static void main(String[] Args) {

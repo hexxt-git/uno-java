@@ -12,4 +12,4 @@ clear:
 	clear
 
 clean:
-	rm -rf bin/*.class
+	rm -rf bin
