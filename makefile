@@ -6,7 +6,7 @@ compile:
 	find src -name "*.java" | xargs javac -d bin
 
 run:
-	java -cp bin UnoGame
+	java -cp bin Main
 
 clear:
 	clear

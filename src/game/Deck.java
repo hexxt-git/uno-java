@@ -1,3 +1,5 @@
+package game;
+
 import cards.ActionCard;
 import cards.Card;
 import cards.NumberCard;
@@ -32,12 +34,12 @@ class Deck extends CardStack {
 
     public Card draw(CardStack placedCards) {
         if (top() == null) {
-            resetAndKeepTop(placedCards);
+            rest(placedCards);
         }
         return pop();
     }
 
-    public void resetAndKeepTop(CardStack placedCards) {
+    public void rest(CardStack placedCards) {
         Card topCard = placedCards.pop();
         while (placedCards.top() != null) {
             Card card = placedCards.pop();
