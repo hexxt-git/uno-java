@@ -58,7 +58,6 @@ public class Uno {
         }
 
         if (players[currentTurn].getHand().size() == 0) {
-            System.out.println(players[currentTurn].getName() + " wins!");
             return true;
         }
         currentTurn = next(currentTurn);

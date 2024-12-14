@@ -1,26 +1,23 @@
-++============================ UNO GAME ===============================++
-||                                                                     ||
-||      Player 1: Aymen                                                ||
-||    > Player 2: Salah                                                ||
-||      Player 3: Jhon Doe (Bot)                                       ||
-||      Player 4: Jane Smith (Bot)                                     ||
-||                                                                     ||
-||    Stack (40):                                                      ||
-||                              [Red 9]                                ||
-||                                                                     ||
-||                                                                     ||
-||    Deck (30):                                                       ||
-||                             [Unknown]                               ||
-||                                                                     ||
-||                                                                     ||
-||    Your Cards:                                                      ||
-||                1.[Red 5]  2.[Red 5]  3.[Green 5]  4.[Wild Reverse]  ||
-||                5.[Blue 8] 6.[Yellow 3]                              ||
-||                                                                     ||
-||    Actions:                                                         ||
-||               q.quit  r.reset  s.save  h.help  d.debug              ||
-||                                                                     ||
-++=====================================================================++
++----------------------------------- UNO GAME --------------------------+
+|             |                                                         | 
+|   Players:  |  Stack (40):                                            | 
+|             |                            [Red 9]                      | 
+|    Salah    |                                                         | 
+| >  Aymen    |                                                         | 
+|   Jhon Doe  |  Deck (30):                                             | 
+|  Jane Smith |                           [Unknown]                     | 
+|             |                                                         | 
+|             |                                                         | 
++-------------+---------------------------------------------------------+
+|                                                                       | 
+|  Your Cards:                                                          | 
+|           1.[Red 5]  2.[Red 5]  3.[Green 5]  4.[Wild Reverse]         | 
+|                    5.[Blue 8] 6.[Yellow 3]                            | 
+|                                                                       | 
+|  Actions:                                                             | 
+|               q.quit  r.reset  s.save  h.help  d.debug                | 
+|                                                                       | 
++-----------------------------------------------------------------------+
 
 Project roadmap
 // main  menu play / help / credits
@@ -41,3 +38,12 @@ Project roadmap
 // -- -- else display error and repeat
 // display end game state and winner
 // keep exact logs of every input and result
+
+
+// TODO: border styles (colors and symbols)
+// TODO: separate border left,right,top,down,x,y and same with padding.
+// TODO: add floating components
+// TODO: add clear background property to components
+// TODO: make an input handler singleton
+// TODO: add a wait for input method
+// TODO: separate game into server and client
