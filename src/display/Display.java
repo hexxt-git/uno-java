@@ -2,9 +2,13 @@ package display;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Stack;
+
+import constants.ConsoleColor;
 
 public class Display {
-    // boolean reading = false;
+    private static final Stack<ConsoleColor> colorStack = new Stack<>();
+    private static ConsoleColor currentColor = ConsoleColor.RESET;
 
     public void print(Object obj) {
         System.out.print(obj);
@@ -39,6 +43,28 @@ public class Display {
         flush();
     }
 
+    public void setColor(ConsoleColor color) {
+        if (color == ConsoleColor.RESET)
+            return;
+        colorStack.push(currentColor); // Save the current color
+        currentColor = color;
+        print(color.code);
+    }
+
+    public void revertColor() {
+        if (!colorStack.isEmpty()) {
+            currentColor = colorStack.pop();
+            print(currentColor.code);
+        } else {
+            resetColor();
+        }
+    }
+
+    public void resetColor() {
+        currentColor = ConsoleColor.RESET;
+        print(ConsoleColor.RESET.code);
+    }
+
     public Point getDimensions() {
         Point dimensions = new Point(80, 24); // Default fallback values
 
@@ -65,8 +91,9 @@ public class Display {
 
         return dimensions;
     }
-
     /*
+     * 
+     * boolean reading = false;
      * 
      * public void readInput() {
      * 

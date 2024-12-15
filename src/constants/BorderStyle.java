@@ -1,7 +1,7 @@
 package constants;
 
 public enum BorderStyle {
-        None(" ", " ", " ", " ", " ", " ", " ", " ", " ", " "),
+        None("", "", "", "", "", "", "", "", "", ""),
         Single(
                         "┌", "┐", "─", "─", "│", "│", "└", "┘", "┤ ", " ├"),
         Double(
