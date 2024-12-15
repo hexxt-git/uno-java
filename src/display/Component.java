@@ -6,6 +6,16 @@ public abstract class Component {
     protected int y = 0;
     protected int w = 0;
     protected int h = 0;
+    private int biasSelf = 1;
+
+    public int getBiasSelf() {
+        return biasSelf;
+    }
+
+    public Component setBiasSelf(int biasSelf) {
+        this.biasSelf = biasSelf;
+        return this;
+    }
 
     public abstract void render(Display display);
 
@@ -14,6 +24,6 @@ public abstract class Component {
         x = 1;
         y = 1;
         w = dimensions.x;
-        h = dimensions.y;
+        h = dimensions.y-1;
     }
 }

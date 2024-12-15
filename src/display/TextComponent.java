@@ -54,6 +54,9 @@ public class TextComponent extends Component {
                             break;
                     }
                     display.moveCursor(final_x, y + col++);
+                    if (col > h + 2)
+                        return; // todo add an indicator for this
+                        // potentially add scrolling 
                     display.print(finalLine);
                     line = new StringBuilder();
                     currentRowWidth = 0;
@@ -81,6 +84,9 @@ public class TextComponent extends Component {
                         break;
                 }
                 display.moveCursor(final_x, y + col++);
+                if (col > h + 2)
+                    return; // todo add an indicator for this
+                    // potentially add scrolling 
                 display.print(finalLine);
             }
             if (slice.length() == 0)
