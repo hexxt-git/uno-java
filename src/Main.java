@@ -65,7 +65,7 @@ class Main {
                 .setBorderStyle(BorderStyle.Double, BorderStyle.Rounded)
                 .setAlignment(ChildAlignment.Vertical);
 
-        ParentComponent div3 = new ParentComponent();
+        ParentComponent div3 = new ParentComponent().setClear(true);
 
         TextComponent paragraph = new TextComponent("").setTextAlignment(TextAlignment.Center);
         div3.addChild(paragraph);
@@ -89,8 +89,8 @@ class Main {
                 } else {
                     paragraph.setInnerText(paragraph.getInnerText() + c);
                 }
-                display.clear();
-                body.render(display);
+                // display.clear();
+                div3.render(display);
             }
         });
         inputThread.start();
