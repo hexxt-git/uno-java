@@ -9,6 +9,8 @@ import constants.TextAlignment;
 import display.Component;
 import display.Display;
 import display.FloatComponent;
+import display.InputListener;
+import display.InputListener;
 import display.ParentComponent;
 import display.Point;
 import display.TextComponent;
@@ -24,13 +26,15 @@ class Main {
         // };
         // Uno game = new Uno(players);
         // game.start();
+        InputListener input_reader = InputListener.getInstance();
 
         Display display = new Display();
         display.hideCursor();
         ParentComponent body = new ParentComponent().setTitle("Uno Game").setBorderStyle(BorderStyle.Double);
         body.setMaxH(40);
 
-        Component window = new FloatComponent().setPosition(-4, 16, 25, 8).setBorderStyle(BorderStyle.Dashed)
+        Component window = new FloatComponent().setPosition(-4, 16, 25,
+                8).setBorderStyle(BorderStyle.Dashed)
                 .setTitle("Window")
                 .addChild(new TextComponent(
                         "this window should be floating in the right, 16 row down. this should cover the text under it"))
@@ -61,9 +65,10 @@ class Main {
                 .setBorderStyle(BorderStyle.Double, BorderStyle.Rounded)
                 .setAlignment(ChildAlignment.Vertical);
 
-        ParentComponent div3 = new ParentComponent().addChild(new TextComponent(
-                "\nDiv 3, text align center, text here should align to the center...\nnew lines are supported too")
-                .setTextAlignment(TextAlignment.Center));
+        ParentComponent div3 = new ParentComponent();
+
+        TextComponent paragraph = new TextComponent("").setTextAlignment(TextAlignment.Center);
+        div3.addChild(paragraph);
 
         body.addChild(div1).addChild(div2).addChild(div3);
         body.addChild(window);
@@ -72,16 +77,37 @@ class Main {
         body.fullScreen(display);
         body.render(display);
 
-        Point dimensions = display.getDimensions();
-        while (true) {
-            Point newDimensions = display.getDimensions();
-            if (!dimensions.equals(newDimensions)) {
-                body.fullScreen(display);
+        Point[] dimensions = { display.getDimensions() };
+        Thread inputThread = new Thread(() -> {
+            while (true) {
+                char c = input_reader.getInput();
+                if (c == 127) {
+                    String text = paragraph.getInnerText();
+                    if (!text.isEmpty()) {
+                        paragraph.setInnerText(text.substring(0, text.length() - 1));
+                    }
+                } else {
+                    paragraph.setInnerText(paragraph.getInnerText() + c);
+                }
                 display.clear();
                 body.render(display);
-                dimensions = newDimensions;
             }
-        }
+        });
+        inputThread.start();
 
+        Thread displayThread = new Thread(() -> {
+            while (true) {
+                Point newDimensions = display.getDimensions();
+                if (!newDimensions.equals(dimensions[0])) {
+                    body.fullScreen(display);
+                    display.clear();
+                    body.render(display);
+                    dimensions[0] = newDimensions;
+                }
+            }
+        });
+        displayThread.start();
+
+        // input_reader.close();
     }
 }

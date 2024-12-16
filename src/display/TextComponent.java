@@ -31,7 +31,7 @@ public class TextComponent extends Component {
     public void render(Display display) {
         int maxRowWidth = w;
         int col = 0;
-        for (String slice : innerText.split("\n")) {
+        for (String slice : innerText.split("\n|\r\n?")) {
             String[] words = slice.split(" ");
             StringBuilder line = new StringBuilder();
             int currentRowWidth = 0;
