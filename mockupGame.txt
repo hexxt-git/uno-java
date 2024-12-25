@@ -4,7 +4,7 @@
 |             |                            [Red 9]                      | 
 |    Salah    |                                                         | 
 | >  Aymen    |                                                         | 
-|   Jhon Doe  |  Deck (30):                                             | 
+|   John Doe  |  Deck (30):                                             | 
 |  Jane Smith |                           [Unknown]                     | 
 |             |                                                         | 
 |             |                                                         | 
@@ -16,7 +16,7 @@
 |                                                                       | 
 |  Actions:                                                             | 
 |               q.quit  r.reset  s.save-as  h.help  d.debug             | 
-|                                                                       | 
+|                                                                       |
 +-----------------------------------------------------------------------+
 
 Game loop

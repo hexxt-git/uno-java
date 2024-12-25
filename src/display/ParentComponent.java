@@ -178,6 +178,16 @@ public class ParentComponent extends Component {
         return this;
     }
 
+    public ParentComponent removeChild(Component child) {
+        children.remove(child);
+        return this;
+    }
+
+    public ParentComponent clearChildren() {
+        children.clear();
+        return this;
+    }
+
     public ChildAlignment getAlignment() {
         return alignment;
     }

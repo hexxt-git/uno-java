@@ -26,7 +26,9 @@ public class Card {
     public boolean isValidPlay(Card other) {
         if (other == null)
             return true;
-        if (this.getColor() == Color.Wild)
+        // placing anything when wild card is on top is an exception and shouldn't occur
+        // in the game
+        if (this.getColor() == Color.Wild || other.getColor() == Color.Wild)
             return true;
         return this.getColor() == other.getColor();
     }
