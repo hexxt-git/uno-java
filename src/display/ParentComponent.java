@@ -10,8 +10,9 @@ import constants.ConsoleColor;
 public class ParentComponent extends Component {
     private List<Component> children = new ArrayList<>();
     private ChildAlignment alignment = ChildAlignment.Vertical;
-    private BorderStyle[] borderStyles = { BorderStyle.Rounded, BorderStyle.Rounded, BorderStyle.Rounded,
-            BorderStyle.Rounded }; // top, right, bottom, left
+    private BorderStyle[] borderStyles = {
+            BorderStyle.None, BorderStyle.None, BorderStyle.None, BorderStyle.None };
+    // top, right, bottom, left
     private ConsoleColor borderColor = ConsoleColor.RESET;
     private int[] padding = { 1, 1, 1, 1 }; // top, right, bottom, left
     private int space = 1;
@@ -270,4 +271,5 @@ public class ParentComponent extends Component {
         this.borderColor = borderColor;
         return this;
     }
+
 }

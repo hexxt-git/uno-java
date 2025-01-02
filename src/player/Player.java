@@ -28,14 +28,14 @@ public abstract class Player {
     }
 
     public abstract Card play(Card topCard);
+
     public abstract Color chooseColor();
 
     protected final Card playCard(Card card) {
         if (hand.remove(card)) {
             return card;
         }
-
-        throw new IllegalArgumentException("Card not found in hand");
+        throw new IllegalArgumentException(String.format("Card not found in hand for player %s: %s", name, card));
     }
 
     public String toString() {

@@ -69,20 +69,17 @@ public class Display {
         Point dimensions = new Point(80, 24); // Default fallback values
 
         try {
-            String os = System.getProperty("os.name").toLowerCase();
 
-            if (os.contains("unix") || os.contains("linux") || os.contains("mac") || os.contains("bsd")) {
-                String[] cmd = { "/bin/sh", "-c", "stty size </dev/tty" };
-                Process process = Runtime.getRuntime().exec(cmd);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String output = reader.readLine();
+            String[] cmd = { "/bin/sh", "-c", "stty size </dev/tty" };
+            Process process = Runtime.getRuntime().exec(cmd);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String output = reader.readLine();
 
-                if (output != null) {
-                    String[] sizes = output.split(" ");
-                    if (sizes.length == 2) {
-                        dimensions.y = Integer.parseInt(sizes[0]);
-                        dimensions.x = Integer.parseInt(sizes[1]);
-                    }
+            if (output != null) {
+                String[] sizes = output.split(" ");
+                if (sizes.length == 2) {
+                    dimensions.y = Integer.parseInt(sizes[0]);
+                    dimensions.x = Integer.parseInt(sizes[1]);
                 }
             }
         } catch (Exception e) {

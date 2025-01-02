@@ -6,8 +6,7 @@ import cards.NumberCard;
 import constants.Color;
 import constants.Action;
 
-class Deck extends CardStack {
-
+public class Deck extends CardStack {
     public Deck() {
         super();
         for (Color color : Color.values()) {

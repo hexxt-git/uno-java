@@ -2,19 +2,56 @@ package player;
 
 import cards.Card;
 import constants.Color;
+import display.InputListener;
 
 public class HumanPlayer extends Player {
-    public HumanPlayer(String name) {
+    private InputListener inputListener;
+
+    public HumanPlayer(String name, InputListener inputListener) {
         super(name);
+        this.inputListener = inputListener;
     }
 
+    @Override
     public Card play(Card topCard) {
-        // TODO: Read user input and return the card
-        playCard(null);
-        return null;
+        while (true) {
+            char input = inputListener.getInput();
+
+            if (input == '\n' || input == '\r') {
+                return null; // Draw card
+            }
+
+            int cardIndex;
+            if (Character.isDigit(input)) {
+                cardIndex = Character.getNumericValue(input) - 1;
+            } else {
+                cardIndex = input - 'a' + 9;
+            }
+
+            if (cardIndex >= 0 && cardIndex < getHand().size()) {
+                Card selectedCard = getHand().get(cardIndex);
+                if (selectedCard.isValidPlay(topCard)) {
+                    return playCard(selectedCard);
+                }
+            }
+        }
     }
 
     public Color chooseColor() {
-        return Color.Red; // TODO: Read user input and return the color
+        while (true) {
+            char input = inputListener.getInput();
+            switch (Character.toUpperCase(input)) {
+                case 'R':
+                    return Color.Red;
+                case 'G':
+                    return Color.Green;
+                case 'B':
+                    return Color.Blue;
+                case 'Y':
+                    return Color.Yellow;
+                default:
+                    System.out.println("Invalid choice. Please choose again.");
+            }
+        }
     }
 }
