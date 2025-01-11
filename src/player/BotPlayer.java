@@ -9,6 +9,12 @@ public class BotPlayer extends Player {
     }
 
     public Card play(Card topCard) {
+        try {
+            Thread.sleep(750);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         for (Card card : getHand()) {
             if (card.isValidPlay(topCard)) {
                 playCard(card);

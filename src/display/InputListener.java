@@ -32,6 +32,28 @@ public class InputListener {
         return ch;
     }
 
+    public synchronized String getString() {
+        StringBuilder sb = new StringBuilder();
+        char ch = 0;
+        while (ch != '\r') {
+            while (inputBuffer == 0) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            ch = inputBuffer;
+            inputBuffer = 0;
+            if (ch == '\r') {
+                break;
+            }
+            sb.append(ch);
+        }
+
+        return sb.toString();
+    }
+
     private synchronized void input(char ch) {
         inputBuffer = ch;
         notifyAll();
@@ -58,6 +80,9 @@ public class InputListener {
                     if ((ch = reader.read()) == -1)
                         continue;
                     if (ch == 3) {
+                        System.out.print("\033[H\033[2J");
+                        System.out.print("\033[H\033[2J");
+                        System.out.println("Exiting...");
                         System.exit(0); // Ctrl+C
                     }
                     input((char) ch);

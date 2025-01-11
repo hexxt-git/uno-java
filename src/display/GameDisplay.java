@@ -49,7 +49,7 @@ public class GameDisplay extends Display {
                 .setAlignment(ChildAlignment.Horizontal);
 
         availableInputs = new TextComponent("");
-        div2.addChild(availableInputs).setPadding(1, 0);
+        div2.addChild(availableInputs).setPadding(1, 0, 1, 1);
 
         ParentComponent div3 = new ParentComponent().setPadding(0, 0, 1, 0)
                 .setBorderStyle(BorderStyle.None, BorderStyle.None, BorderStyle.None, BorderStyle.None)
@@ -81,7 +81,7 @@ public class GameDisplay extends Display {
     }
 
     public void setAvailableInputs(String inputs, String playerName) {
-        availableInputs.setInnerText("  Available Inputs for " + playerName + ": \n\n" + inputs);
+        availableInputs.setInnerText("  Available Inputs for \u001B[4m" + playerName + "\u001B[0m: \n\n" + inputs);
         render();
     }
 
@@ -93,10 +93,10 @@ public class GameDisplay extends Display {
     private List<String> logEntries = new ArrayList<>();
 
     public void log(String entry) {
-        if (logEntries.size() >= 15) {
-            logEntries.remove(0);
+        if (logEntries.size() >= 20) {
+            logEntries.remove(logEntries.size() - 1);
         }
-        logEntries.add(entry);
+        logEntries.add(0, entry);
         StringBuilder sb = new StringBuilder("  Logs:\n\n");
         for (String logEntry : logEntries) {
             sb.append(logEntry).append("\n");
@@ -105,21 +105,21 @@ public class GameDisplay extends Display {
         render();
     }
 
-    public void error(String message) {
-        FloatComponent errorBox = new FloatComponent();
+    public void alert(String message) {
+        FloatComponent alertBox = new FloatComponent();
 
-        errorBox.setTargetX(4);
-        errorBox.setTargetY(4);
-        errorBox.setTargetW(20);
-        errorBox.setTargetH(10);
-        errorBox.setClear(true);
+        alertBox.setTargetX(root.w / 2 - 15);
+        alertBox.setTargetY(root.h / 3 - 5);
+        alertBox.setTargetW(30);
+        alertBox.setTargetH(10);
+        alertBox.setClear(true);
 
-        errorBox.setTitle("Error").setBorderStyle(BorderStyle.Single)
-                .setBorderColor(ConsoleColor.RED).setPadding(1, 1, 1, 1);
+        alertBox.setTitle("alert").setBorderStyle(BorderStyle.Single)
+                .setBorderColor(ConsoleColor.BLUE).setPadding(1, 1, 1, 1);
 
-        errorBox.addChild(new TextComponent(message).setTextAlignment(TextAlignment.Center));
+        alertBox.addChild(new TextComponent(message).setTextAlignment(TextAlignment.Center));
 
-        root.addChild(errorBox);
+        root.addChild(alertBox);
         render();
     }
 

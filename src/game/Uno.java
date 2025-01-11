@@ -38,10 +38,10 @@ public class Uno {
         display.setDeck(deck);
         display.log("Deck shuffled.");
         for (Player player : players) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 3; i++) {
                 player.draw(deck.draw(placedCards));
             }
-            display.log(player.getName() + " drew 7 cards.");
+            display.log(player.getName() + " drew 3 cards.");
         }
 
         String[] playerNames = new String[players.length];
@@ -56,27 +56,33 @@ public class Uno {
         display.setPlayers(playerNames);
 
         while (!gameOver) {
-            if (playTurn()) {
+            playTurn();
+
+            Player winner = null;
+            for (Player player : players) {
+                if (player.getHand().size() == 0) {
+                    winner = player;
+                    break;
+                }
+            }
+            if (winner != null) {
                 gameOver = true;
-                display.log(players[currentTurn].getName() + " has won the game!");
+                display.alert("\n" + winner.getName() + " has won the game!\n\n\n\n[CTRL+C] to Exit");
+                display.log(winner.getName() + " has won the game!");
             }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
             display.setTableTop(placedCards.top().toString());
         }
 
     }
 
-    private boolean playTurn() {
+    private void playTurn() {
         Card top = placedCards.top();
         if (top == null) {
             placedCards.push(deck.draw(placedCards));
             display.setDeck(deck);
             display.log("Placed a new card on the table.");
-            return false;
+            return;
         }
 
         display.setTableTop(top.toString());
@@ -124,7 +130,7 @@ public class Uno {
             display.log(players[currentTurn].getName() + " drew a card.");
         } else {
             if (!play.isValidPlay(top)) {
-                display.error("Invalid play: " + play + " on " + top);
+                display.alert("Invalid play: " + play + " on " + top);
                 throw new RuntimeException("Invalid play: " + play + " on " + top);
             }
             placedCards.push(play);
@@ -145,11 +151,7 @@ public class Uno {
             }
         }
 
-        if (players[currentTurn].getHand().size() == 0) {
-            return true;
-        }
         currentTurn = next(currentTurn);
-        return false;
     }
 
     private void handleActionCard(ActionCard actionCard) {
