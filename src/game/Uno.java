@@ -38,10 +38,10 @@ public class Uno {
         display.setDeck(deck);
         display.log("Deck shuffled.");
         for (Player player : players) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 7; i++) {
                 player.draw(deck.draw(placedCards));
             }
-            display.log(player.getName() + " drew 3 cards.");
+            display.log(player.getName() + " drew 7 cards.");
         }
 
         String[] playerNames = new String[players.length];
