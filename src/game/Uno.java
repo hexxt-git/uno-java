@@ -11,6 +11,7 @@ import constants.Color;
 import constants.ConsoleColor;
 import display.GameDisplay;
 import display.InputListener;
+import leaderboard.leaderboardcl;
 
 public class Uno {
     Player[] players;
@@ -21,6 +22,9 @@ public class Uno {
     GameDisplay display;
     InputListener inputListener;
     boolean gameOver;
+    leaderboardcl leaderboard = new leaderboardcl();
+
+
 
     public Uno(Player[] players, GameDisplay display, InputListener inputListener) {
         this.players = players;
@@ -31,9 +35,13 @@ public class Uno {
         this.display = display;
         this.inputListener = inputListener;
         this.gameOver = false;
+
+        
+
     }
 
     public void start() {
+        
         deck.shuffle();
         display.setDeck(deck);
         display.log("Deck shuffled.");
@@ -45,7 +53,9 @@ public class Uno {
         }
 
         String[] playerNames = new String[players.length];
+
         for (int i = 0; i < players.length; i++) {
+            leaderboard.createScore(0, players[i].getName());
             if (i == currentTurn) {
                 playerNames[i] = "> " + players[i].getName();
             } else {
@@ -56,6 +66,7 @@ public class Uno {
         display.setPlayers(playerNames);
 
         while (!gameOver) {
+
             playTurn();
 
             Player winner = null;
@@ -68,9 +79,10 @@ public class Uno {
             if (winner != null) {
                 gameOver = true;
                 display.alert("\n" + winner.getName() + " has won the game!\n\n\n\n[CTRL+C] to Exit");
+                leaderboard.printLeaderboard();
                 display.log(winner.getName() + " has won the game!");
             }
-
+            
             display.setTableTop(placedCards.top().toString());
         }
 
@@ -124,8 +136,10 @@ public class Uno {
         Card play = players[currentTurn].play(top);
 
         if (play == null) {
+
             Card drawnCard = deck.draw(placedCards);
             players[currentTurn].draw(drawnCard);
+            leaderboard.updateScore(-10, players[currentTurn].getName());
             display.setDeck(deck);
             display.log(players[currentTurn].getName() + " drew a card.");
         } else {
@@ -134,6 +148,7 @@ public class Uno {
                 throw new RuntimeException("Invalid play: " + play + " on " + top);
             }
             placedCards.push(play);
+            leaderboard.updateScore(5, players[currentTurn].getName());
             display.log(players[currentTurn].getName() + " played " + play + ".");
 
             if (play.getColor() == Color.Wild) {
@@ -148,6 +163,8 @@ public class Uno {
             }
             if (play instanceof ActionCard) {
                 handleActionCard((ActionCard) play);
+                leaderboard.updateScore(10, players[currentTurn].getName());
+
             }
         }
 
@@ -190,4 +207,5 @@ public class Uno {
     private int next(int index) {
         return (index + (direction ? 1 : -1) + players.length) % players.length;
     }
+    
 }

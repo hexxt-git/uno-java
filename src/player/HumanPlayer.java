@@ -7,7 +7,7 @@ import display.InputListener;
 public class HumanPlayer extends Player {
     private InputListener inputListener;
     private int turnCount = 0;
-    private int score =0;
+   
 
     public HumanPlayer(String name, InputListener inputListener) {
         super(name);
@@ -16,15 +16,13 @@ public class HumanPlayer extends Player {
     public int  getTurnCount() {
         return turnCount;
     }
-    public int  getScore() {
-        return score;
-    }
 
+   
     @Override
     public Card play(Card topCard) {
         while (true) {
             char input = inputListener.getInput();
-
+            
             if (input == '\n' || input == '\r') {
                 return null; // Draw card
             }
@@ -39,8 +37,8 @@ public class HumanPlayer extends Player {
             if (cardIndex >= 0 && cardIndex < getHand().size()) {
                 Card selectedCard = getHand().get(cardIndex);
                 if (selectedCard.isValidPlay(topCard)) {
-                    // score += selectedCard.getValue();
-                    // turnCount++;
+                    
+                     turnCount++;
                     return playCard(selectedCard);
 
                 }
