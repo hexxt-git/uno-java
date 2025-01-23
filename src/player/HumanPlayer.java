@@ -6,10 +6,18 @@ import display.InputListener;
 
 public class HumanPlayer extends Player {
     private InputListener inputListener;
+    private int turnCount = 0;
+    private int score =0;
 
     public HumanPlayer(String name, InputListener inputListener) {
         super(name);
         this.inputListener = inputListener;
+    }
+    public int  getTurnCount() {
+        return turnCount;
+    }
+    public int  getScore() {
+        return score;
     }
 
     @Override
@@ -31,7 +39,10 @@ public class HumanPlayer extends Player {
             if (cardIndex >= 0 && cardIndex < getHand().size()) {
                 Card selectedCard = getHand().get(cardIndex);
                 if (selectedCard.isValidPlay(topCard)) {
+                    // score += selectedCard.getValue();
+                    // turnCount++;
                     return playCard(selectedCard);
+
                 }
             }
         }

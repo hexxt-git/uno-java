@@ -11,6 +11,8 @@ import constants.TextAlignment;
 import game.Deck;
 
 public class GameDisplay extends Display {
+    private TextComponent score ;
+    private TextComponent turns;
     private ParentComponent root;
     private TextComponent players;
     private TextComponent tableTop;
@@ -40,9 +42,15 @@ public class GameDisplay extends Display {
         tableTop = new TextComponent("Table Top:\n   [Empty]");
         deck = new TextComponent("Deck (108 cards):\n   [Hidden]");
 
-        table.addChild(tableTop).addChild(deck);
 
+        table.addChild(tableTop).addChild(deck);
+        
+        score = new TextComponent("Score:\n   [Empty]");
+        turns = new TextComponent("Turns:\n   [Empty]");
+
+//  .addchild(score).addchild(turns)
         div1.addChild(playersParent).addChild(table);
+        
 
         ParentComponent div2 = new ParentComponent().setPadding(0, 0, 1, 0)
                 .setBorderStyle(BorderStyle.None, BorderStyle.None, BorderStyle.Single, BorderStyle.None)
