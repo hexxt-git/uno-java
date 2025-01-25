@@ -1,5 +1,7 @@
 package constants;
 
+// Defines card colors and their ANSI terminal representations
+// Used throughout the game for card display
 public enum Color {
     Red("\033[0;31m"),
     Green("\033[0;32m"),

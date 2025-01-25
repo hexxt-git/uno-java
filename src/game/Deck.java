@@ -1,36 +1,48 @@
 package game;
 
-import cards.ActionCard;
-import cards.Card;
-import cards.NumberCard;
+import cards.*;
 import constants.Color;
-import constants.Action;
+
+// Specialized CardStack that represents the Uno deck
+// Handles deck initialization and reshuffling
 
 public class Deck extends CardStack {
+    // Creates a standard 108-card Uno deck
     public Deck() {
         super();
+        // For each color (Red, Blue, Green, Yellow):
         for (Color color : Color.values()) {
-            if (color == Color.Wild)
-                continue;
-            for (int i = 0; i < 10; i++) {
-                push(new NumberCard(color, i));
-                if (i != 0) {
+            if (color == Color.Wild) {
+                // Add Wild cards:
+                // - Four Blank Wild cards
+                // - Four Wild Draw4 cards
+                for (int i = 0; i < 4; i++) {
+                    push(new Card(Color.Wild));
+                    push(new DrawFourCard());
+                }
+            } else {
+                // Add number cards:
+                // - One '0' card
+                // - Two of each number 1-9
+                for (int i = 0; i < 10; i++) {
                     push(new NumberCard(color, i));
+                    if (i != 0) {
+                        push(new NumberCard(color, i));
+                    }
+                }
+                // Add action cards:
+                // Two of each action card per color
+                for (int i = 0; i < 2; i++) {
+                    push(new SkipCard(color));
+                    push(new ReverseCard(color));
+                    push(new DrawTwoCard(color));
                 }
             }
-            for (Action action : Action.values()) {
-                if (action == Action.Draw4)
-                    continue;
-                push(new ActionCard(color, action));
-                push(new ActionCard(color, action));
-            }
-        }
-        for (int i = 0; i < 4; i++) {
-            push(new Card(Color.Wild));
-            push(new ActionCard(Color.Wild, Action.Draw4));
         }
     }
 
+    // Draws a card, reshuffling if needed
+    // Used by GameManager for card draws
     public Card draw(CardStack placedCards) {
         if (top() == null) {
             rest(placedCards);

@@ -1,8 +1,11 @@
 package display;
 
+// Simple 2D point class for storing coordinates
+// Used throughout display system for positioning
+
 public class Point {
-    public int x;
-    public int y;
+    public int x;  // Column position
+    public int y;  // Row position
 
     public Point(int x, int y) {
         this.x = x;

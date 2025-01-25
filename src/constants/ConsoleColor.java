@@ -1,6 +1,7 @@
 package constants;
 
-// an easy way to access all console colors using ansi codes
+// Comprehensive set of ANSI terminal color codes
+// Used for all colored text output in the game
 public enum ConsoleColor {
     RESET("\033[0m"),
     BLACK("\u001B[30m"),

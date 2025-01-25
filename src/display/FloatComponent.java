@@ -1,11 +1,16 @@
 package display;
 
-public class FloatComponent extends ParentComponent {
-    private int targetX = 0;
-    private int targetY = 0;
-    private int targetW = 0;
-    private int targetH = 0;
+// A component that can be positioned freely on the screen
+// Used for popups, alerts and other floating UI elements
 
+public class FloatComponent extends ParentComponent {
+    private int targetX = 0;  // Desired X position
+    private int targetY = 0;  // Desired Y position 
+    private int targetW = 0;  // Desired width
+    private int targetH = 0;  // Desired height
+
+    // Adjusts position to keep component within screen bounds
+    // Will be used for responsive positioning of alerts
     public void render(Display display) {
         if (targetW == 0 || targetH == 0) {
             return;

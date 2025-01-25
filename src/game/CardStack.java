@@ -4,6 +4,9 @@ import cards.Card;
 import java.util.ArrayList;
 import java.util.List;
 
+// Represents a stack of cards with basic operations
+// Used for both the deck and discard pile
+
 public class CardStack {
     private List<Card> cards;
 
@@ -15,6 +18,7 @@ public class CardStack {
         return cards.size();
     }
 
+    // Standard stack operations
     public void push(Card card) {
         if (card != null) {
             cards.add(card);
@@ -35,6 +39,8 @@ public class CardStack {
         return null;
     }
 
+    // Fisher-Yates shuffle implementation
+    // Used when deck needs to be reshuffled
     public void shuffle() {
         for (int i = 0; i < cards.size(); i++) {
             int j = (int) (Math.random() * (cards.size() - i) + i);

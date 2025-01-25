@@ -7,12 +7,17 @@ import constants.BorderStyle;
 import constants.ChildAlignment;
 import constants.ConsoleColor;
 import constants.TextAlignment;
+import constants.Color;
 
 import game.Deck;
+import player.Player;
+import cards.Card;
+import player.HumanPlayer;
+
+// Main game UI that composes all display components
+// Manages the game board, player info, and message areas
 
 public class GameDisplay extends Display {
-    private TextComponent score ;
-    private TextComponent turns;
     private ParentComponent root;
     private TextComponent players;
     private TextComponent tableTop;
@@ -43,12 +48,7 @@ public class GameDisplay extends Display {
         deck = new TextComponent("Deck (108 cards):\n   [Hidden]");
 
 
-        table.addChild(tableTop).addChild(deck);
-        
-        score = new TextComponent("Score:\n   [Empty]");
-        turns = new TextComponent("Turns:\n   [Empty]");
-
-//  .addchild(score).addchild(turns)
+        table.addChild(tableTop).addChild(deck);        
         div1.addChild(playersParent).addChild(table);
         
 
@@ -69,6 +69,7 @@ public class GameDisplay extends Display {
         root.addChild(div1).addChild(div2).addChild(div3);
     }
 
+    // Updates the display when game state changes
     public void setPlayers(String[] playerNames) {
         StringBuilder sb = new StringBuilder("Players: \n\n");
         for (String name : playerNames) {
@@ -113,6 +114,8 @@ public class GameDisplay extends Display {
         render();
     }
 
+    // Shows floating alert messages
+    // Will be used for important game events
     public void alert(String message) {
         FloatComponent alertBox = new FloatComponent();
 
@@ -135,5 +138,80 @@ public class GameDisplay extends Display {
         this.clear();
         root.fullScreen(this);
         root.render(this);
+    }
+
+    // Formats and updates player list with current turn indicator and hand sizes
+    public void updatePlayerList(Player[] players, int currentTurn) {
+        String[] playerNames = new String[players.length];
+        for (int i = 0; i < players.length; i++) {
+            if (i == currentTurn) {
+                playerNames[i] = "> " + players[i].getName() + " (" + players[i].getHand().size() + ")";
+            } else {
+                playerNames[i] = players[i].getName() + " (" + players[i].getHand().size() + ")";
+            }
+        }
+        setPlayers(playerNames);
+    }
+
+    // Formats and displays available actions for human player
+    public void showAvailableActions(Player currentPlayer, Card topCard) {
+        if (!(currentPlayer instanceof HumanPlayer)) {
+            clearAvailableInputs();
+            return;
+        }
+
+        StringBuilder actions = new StringBuilder();
+        actions.append("Enter - Draw card\n");
+
+        List<Card> hand = currentPlayer.getHand();
+        for (int i = 0; i < hand.size(); i++) {
+            char actionKey = (char) ('a' + i - 9);
+            if (hand.get(i).isValidPlay(topCard)) {
+                if (i < 9) {
+                    actions.append(String.format("%d - Play %s\n", i + 1, hand.get(i)));
+                } else {
+                    actions.append(String.format("%c - Play %s\n", actionKey, hand.get(i)));
+                }
+            } else {
+                actions.append(String.format("%sx - Play \033[0m%s\n", ConsoleColor.GRAY.code, hand.get(i)));
+            }
+        }
+
+        setAvailableInputs(actions.toString(), currentPlayer.getName());
+    }
+
+    // Shows color selection options for wild cards
+    public void showColorSelection(Player player) {
+        if (player instanceof HumanPlayer) {
+            setAvailableInputs("R - Red\nG - Green\nB - Blue\nY - Yellow", player.getName());
+        }
+    }
+
+    // Shows game over message with winner
+    public void showGameOver(Player winner) {
+        alert("\n" + winner.getName() + " has won the game!\n\n\n\n[CTRL+C] to Exit");
+        log(winner.getName() + " has won the game!");
+    }
+
+    // Logs a card being played with color info
+    public void logCardPlayed(Player player, Card card, Color chosenColor) {
+        if (chosenColor != null) {
+            log(player.getName() + " chose color " + chosenColor.consoleColor + chosenColor + "\033[0m.");
+        }
+        log(player.getName() + " played " + card + ".");
+    }
+
+    // Logs cards being drawn
+    public void logCardDrawn(Player player, int count) {
+        if (count == 1) {
+            log(player.getName() + " drew a card.");
+        } else {
+            log(player.getName() + " drew " + count + " cards.");
+        }
+    }
+
+    // Logs action card effects
+    public void logActionEffect(String playerName, String effect) {
+        log(playerName + " " + effect);
     }
 }

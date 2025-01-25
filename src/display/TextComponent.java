@@ -2,6 +2,9 @@ package display;
 
 import constants.TextAlignment;
 
+// Component for displaying text with alignment options
+// Handles word wrapping and ANSI color codes
+
 public class TextComponent extends Component {
     private String innerText;
     private TextAlignment textAlignment = TextAlignment.Left;
@@ -28,6 +31,8 @@ public class TextComponent extends Component {
         return this;
     }
 
+    // Renders text with proper wrapping and alignment
+    // Will be used for all text display in the game
     public void render(Display display) {
         int maxRowWidth = w;
         int col = 0;

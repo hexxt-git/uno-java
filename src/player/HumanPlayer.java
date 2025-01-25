@@ -4,9 +4,12 @@ import cards.Card;
 import constants.Color;
 import display.InputListener;
 
+// Represents a human player that takes input from the terminal
+// Handles input validation and turn management
+
 public class HumanPlayer extends Player {
     private InputListener inputListener;
-    private int turnCount = 0;
+    private int turnCount = 0;  // Tracks number of turns taken
    
 
     public HumanPlayer(String name, InputListener inputListener) {
@@ -17,7 +20,8 @@ public class HumanPlayer extends Player {
         return turnCount;
     }
 
-   
+    // Waits for valid card selection from player
+    // Returns null if player chooses to draw instead
     @Override
     public Card play(Card topCard) {
         while (true) {
@@ -46,6 +50,9 @@ public class HumanPlayer extends Player {
         }
     }
 
+    // Gets color choice for wild cards
+    // Will be enhanced with better input validation
+    @Override
     public Color chooseColor() {
         while (true) {
             char input = inputListener.getInput();

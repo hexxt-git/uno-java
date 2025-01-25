@@ -3,11 +3,16 @@ package display;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+// Singleton class that handles raw terminal input
+// Provides both character and string-based input methods
+
 public class InputListener {
     private static InputListener instance = null;
     private static boolean reading = false;
     private char inputBuffer = 0;
 
+    // Sets terminal to raw mode for immediate character input
+    // Used for real-time game controls
     private InputListener() {
     }
 
@@ -19,6 +24,8 @@ public class InputListener {
         return instance;
     }
 
+    // Blocks until a character is available and returns it
+    // Used for single-key game controls
     public synchronized char getInput() {
         while (inputBuffer == 0) {
             try {
@@ -32,6 +39,8 @@ public class InputListener {
         return ch;
     }
 
+    // Blocks until a full line of text is entered
+    // Used for player names and other text input
     public synchronized String getString() {
         StringBuilder sb = new StringBuilder();
         char ch = 0;
@@ -54,11 +63,15 @@ public class InputListener {
         return sb.toString();
     }
 
+    // Thread-safe method to store incoming character
+    // Used by input thread to pass characters to main thread
     private synchronized void input(char ch) {
         inputBuffer = ch;
         notifyAll();
     }
 
+    // Sets terminal to raw mode for immediate character input
+    // Used for real-time game controls
     private void start() {
         synchronized (InputListener.class) {
             if (reading) {
@@ -101,6 +114,8 @@ public class InputListener {
         }).start();
     }
 
+    // Restores terminal to normal mode on shutdown
+    // Will be used for clean program termination
     public void close() {
         synchronized (InputListener.class) {
             reading = false;

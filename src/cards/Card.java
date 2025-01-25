@@ -2,9 +2,12 @@ package cards;
 
 import constants.Color;
 
+// Base class representing a card in the Uno game
+// Handles color management and basic card matching logic
+
 public class Card {
-    private Color color;
-    private Color currentColor;
+    private Color color;        // Original color of the card
+    private Color currentColor; // Current color (may change for Wild cards)
 
     public Card(Color color) {
         this.color = color;
@@ -23,6 +26,8 @@ public class Card {
         return this.currentColor;
     }
 
+    // Checks if this card can be played on top of another card
+    // Used by GameManager to validate moves
     public boolean isValidPlay(Card other) {
         if (other == null)
             return true;

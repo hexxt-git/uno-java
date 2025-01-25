@@ -1,5 +1,7 @@
 package constants;
 
+// Defines different border styles using Unicode box characters
+// Used by ParentComponent for visual borders
 public enum BorderStyle {
         None("", "", "", "", "", "", "", "", "", ""),
         Single(

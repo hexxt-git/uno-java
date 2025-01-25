@@ -2,30 +2,33 @@ package cards;
 
 import constants.Action;
 import constants.Color;
+import game.GameState;
 
-public class ActionCard extends Card {
-    public Action action;
+// Base class for all action cards (Skip, Reverse, Draw2, Draw4)
+// Each action card type implements its own effect
+public abstract class ActionCard extends Card {
+    // The action this card performs when played
+    protected Action action;
 
     public ActionCard(Color color, Action action) {
         super(color);
         this.action = action;
     }
 
+    // Abstract method that each action card must implement
+    // Defines how the card affects game state
+    public abstract void applyEffect(GameState state);
+
+    @Override
     public String toString() {
-        return String.format("%s[%s %s]\033[0m", getColor().consoleColor, getColor(), action);
+        return getColor().consoleColor + action + "\033[0m";
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (!super.equals(obj)) return false;
+        if (getClass() != obj.getClass()) return false;
         ActionCard other = (ActionCard) obj;
-        if (action != other.action)
-            return false;
-        return true;
+        return action == other.action;
     }
 }

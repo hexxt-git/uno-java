@@ -2,8 +2,11 @@ package cards;
 
 import constants.Color;
 
+// Represents numbered cards (0-9) in different colors
+// Extends base Card with number property and special matching rules
+
 public class NumberCard extends Card {
-    private int number;
+    private int number; // The number on the card (0-9)
 
     public NumberCard(Color color, int number) {
         super(color);
@@ -14,6 +17,8 @@ public class NumberCard extends Card {
         return number;
     }
 
+    // Overrides base isValidPlay to allow matching numbers
+    // regardless of color
     @Override
     public boolean isValidPlay(Card other) {
         if (other == null)

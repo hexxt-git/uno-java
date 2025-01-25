@@ -7,6 +7,9 @@ import constants.BorderStyle;
 import constants.ChildAlignment;
 import constants.ConsoleColor;
 
+// A component that can contain and layout other components
+// Handles borders, padding and child component arrangement
+
 public class ParentComponent extends Component {
     private List<Component> children = new ArrayList<>();
     private ChildAlignment alignment = ChildAlignment.Vertical;
@@ -19,6 +22,8 @@ public class ParentComponent extends Component {
     private String title = "";
     private boolean clear = false;
 
+    // Draws borders and title around the component
+    // Used for visual separation of UI sections
     private void border(Display display) {
         display.setColor(borderColor);
         display.moveCursor(x, y);
@@ -34,6 +39,8 @@ public class ParentComponent extends Component {
         display.resetColor();
     }
 
+    // Centers and renders component title with proper styling
+    // Used for section headers and dialog titles
     private void printTitle(Display display) {
         int leftPadding = Math.max(0,
                 (w - title.length() - borderStyles[0].titleLeft.length() - borderStyles[0].titleRight.length())
@@ -78,6 +85,8 @@ public class ParentComponent extends Component {
         }
     }
 
+    // Arranges children vertically with proper spacing
+    // Used by GameDisplay for main layout
     private void alignVertically(List<Component> children) {
         int offset_y = 0;
         int totalBias = children.stream().mapToInt(Component::getBiasSelf).sum();
@@ -106,6 +115,8 @@ public class ParentComponent extends Component {
         }
     }
 
+    // Arranges children horizontally with proper spacing
+    // Used by GameDisplay for toolbar-like layouts
     private void alignHorizontally(List<Component> children) {
         int offset_x = 0;
         int totalBias = children.stream().mapToInt(Component::getBiasSelf).sum();
@@ -134,6 +145,8 @@ public class ParentComponent extends Component {
         }
     }
 
+    // Clears component's background area
+    // Used by floating components to ensure clean display
     private void clear(Display display) {
         for (int row = 0; row < h; row++) {
             display.moveCursor(x, y + row);
@@ -141,6 +154,8 @@ public class ParentComponent extends Component {
         }
     }
 
+    // Main render method that handles layout and child rendering
+    // Will be extended to support scrolling in the future
     public void render(Display display) {
         if (clear)
             clear(display);
