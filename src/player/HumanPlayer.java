@@ -31,7 +31,10 @@ public class HumanPlayer extends Player {
             if (cardIndex >= 0 && cardIndex < getHand().size()) {
                 Card selectedCard = getHand().get(cardIndex);
                 if (selectedCard.isValidPlay(topCard)) {
-                    return playCard(selectedCard);
+                    if (hand.remove(card)) {
+            		return card;
+        	    }
+        		throw new IllegalArgumentException(String.format("Card not found in hand for player %s: %s", name, card));
                 }
             }
         }

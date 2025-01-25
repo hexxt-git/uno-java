@@ -31,13 +31,6 @@ public abstract class Player {
 
     public abstract Color chooseColor();
 
-    protected final Card playCard(Card card) {
-        if (hand.remove(card)) {
-            return card;
-        }
-        throw new IllegalArgumentException(String.format("Card not found in hand for player %s: %s", name, card));
-    }
-
     public String toString() {
         return String.format("%s: %s", name, hand);
     }
