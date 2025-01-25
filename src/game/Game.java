@@ -8,16 +8,24 @@ import constants.Color;
 import display.GameDisplay;
 import leaderboard.leaderboardcl;
 
-// Main game logic for Uno
-// Handles turn management and game rules
 public class Game {
-    private GameState state;
+    private Player[] players;
+    private Deck deck;
+    private CardStack placedCards;
+    private boolean direction; // true = clockwise, false = counter-clockwise
+    private int currentTurn;
+    private GameDisplay display;
+    private boolean gameOver;
     private leaderboardcl leaderboard;
 
     public Game(Player[] players, GameDisplay display) {
-        Deck deck = new Deck();
-        CardStack placedCards = new CardStack();
-        this.state = new GameState(players, deck, placedCards, display);
+        this.players = players;
+        this.deck = new Deck();
+        this.placedCards = new CardStack();
+        this.direction = true;
+        this.currentTurn = 0;
+        this.gameOver = false;
+        this.display = display;
         this.leaderboard = new leaderboardcl();
     }
 
@@ -27,16 +35,16 @@ public class Game {
     }
 
     private void initializeGame() {
-        state.getDeck().shuffle();
-        state.getDisplay().setDeck(state.getDeck());
-        state.getDisplay().log("Deck shuffled.");
+        deck.shuffle();
+        display.setDeck(deck);
+        display.log("Deck shuffled.");
 
         // Deal initial cards
-        for (Player player : state.getPlayers()) {
+        for (Player player : players) {
             for (int i = 0; i < 7; i++) {
-                player.draw(state.drawCard());
+                player.draw(drawCard());
             }
-            state.getDisplay().log(player.getName() + " drew 7 cards.");
+            display.log(player.getName() + " drew 7 cards.");
             leaderboard.createScore(0, player.getName());
         }
 
@@ -44,31 +52,31 @@ public class Game {
     }
 
     private void gameLoop() {
-        while (!state.isGameOver()) {
+        while (!gameOver) {
             playTurn();
-            state.checkWinCondition();
-            if (state.isGameOver()) {
+            checkWinCondition();
+            if (gameOver) {
                 leaderboard.printLeaderboard();
             }
-            state.getDisplay().setTableTop(state.getTopCard().toString());
+            display.setTableTop(getTopCard().toString());
         }
     }
 
     private void playTurn() {
-        Card topCard = state.getTopCard();
+        Card topCard = getTopCard();
         if (topCard == null) {
-            Card newCard = state.drawCard();
-            state.playCard(newCard);
-            state.getDisplay().setDeck(state.getDeck());
-            state.getDisplay().log("Placed a new card on the table.");
+            Card newCard = drawCard();
+            playCard(newCard);
+            display.setDeck(deck);
+            display.log("Placed a new card on the table.");
             return;
         }
 
-        state.getDisplay().setTableTop(topCard.toString());
-        state.getDisplay().showAvailableActions(state.getCurrentPlayer(), topCard);
+        display.setTableTop(topCard.toString());
+        display.showAvailableActions(getCurrentPlayer(), topCard);
         updatePlayerDisplay();
 
-        Card playedCard = state.getCurrentPlayer().play(topCard);
+        Card playedCard = getCurrentPlayer().play(topCard);
 
         if (playedCard == null) {
             handleCardDraw();
@@ -76,48 +84,102 @@ public class Game {
             handleCardPlay(playedCard);
         }
 
-        state.advanceTurn();
+        advanceTurn();
     }
 
     private void handleCardDraw() {
-        Player currentPlayer = state.getCurrentPlayer();
-        Card drawnCard = state.drawCard();
+        Player currentPlayer = getCurrentPlayer();
+        Card drawnCard = drawCard();
         currentPlayer.draw(drawnCard);
         leaderboard.updateScore(-10, currentPlayer.getName());
-        state.getDisplay().setDeck(state.getDeck());
-        state.getDisplay().logCardDrawn(currentPlayer, 1);
+        display.setDeck(deck);
+        display.logCardDrawn(currentPlayer, 1);
     }
 
     private void handleCardPlay(Card playedCard) {
-        if (!playedCard.isValidPlay(state.getTopCard())) {
-            state.getDisplay().alert("Invalid play: " + playedCard + " on " + state.getTopCard());
-            throw new RuntimeException("Invalid play: " + playedCard + " on " + state.getTopCard());
+        if (!playedCard.isValidPlay(getTopCard())) {
+            display.alert("Invalid play: " + playedCard + " on " + getTopCard());
+            throw new RuntimeException("Invalid play: " + playedCard + " on " + getTopCard());
         }
 
-        state.playCard(playedCard);
-        leaderboard.updateScore(5, state.getCurrentPlayer().getName());
+        playCard(playedCard);
+        leaderboard.updateScore(5, getCurrentPlayer().getName());
 
         if (playedCard.getColor() == Color.Wild) {
             handleWildCard(playedCard);
         }
 
         if (playedCard instanceof ActionCard) {
-            ((ActionCard) playedCard).applyEffect(state);
-            leaderboard.updateScore(10, state.getCurrentPlayer().getName());
+            ((ActionCard) playedCard).applyEffect(this);
+            leaderboard.updateScore(10, getCurrentPlayer().getName());
         }
     }
 
     private void handleWildCard(Card wildCard) {
-        Player currentPlayer = state.getCurrentPlayer();
+        Player currentPlayer = getCurrentPlayer();
         if (currentPlayer instanceof HumanPlayer) {
-            state.getDisplay().showColorSelection(currentPlayer);
+            display.showColorSelection(currentPlayer);
         }
         Color chosenColor = currentPlayer.chooseColor();
         wildCard.setColor(chosenColor);
-        state.getDisplay().logCardPlayed(currentPlayer, wildCard, chosenColor);
+        display.logCardPlayed(currentPlayer, wildCard, chosenColor);
     }
 
     private void updatePlayerDisplay() {
-        state.getDisplay().updatePlayerList(state.getPlayers(), state.getCurrentTurnIndex());
+        display.updatePlayerList(players, currentTurn);
+    }
+
+    public Player getCurrentPlayer() {
+        return players[currentTurn];
+    }
+
+    public Player getNextPlayer() {
+        return players[getNextPlayerIndex()];
+    }
+
+    public void skipNextPlayer() {
+        currentTurn = getNextPlayerIndex();
+    }
+
+    public void reverseDirection() {
+        direction = !direction;
+    }
+
+    public Card drawCard() {
+        return deck.draw(placedCards);
+    }
+
+    public void playCard(Card card) {
+        placedCards.push(card);
+    }
+
+    private int getNextPlayerIndex() {
+        return (currentTurn + (direction ? 1 : -1) + players.length) % players.length;
+    }
+
+    public void advanceTurn() {
+        currentTurn = getNextPlayerIndex();
+    }
+
+    public Card getTopCard() {
+        return placedCards.top();
+    }
+
+    public void checkWinCondition() {
+        for (Player player : players) {
+            if (player.getHand().isEmpty()) {
+                gameOver = true;
+                display.showGameOver(player);
+                break;
+            }
+        }
+    }
+
+    public GameDisplay getDisplay() {
+        return display;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 }

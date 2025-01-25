@@ -2,7 +2,7 @@ package cards;
 
 import constants.Action;
 import constants.Color;
-import game.GameState;
+import game.Game;
 import player.Player;
 
 // Forces next player to draw 2 cards
@@ -12,12 +12,12 @@ public class DrawTwoCard extends ActionCard {
     }
 
     @Override
-    public void applyEffect(GameState state) {
-        Player nextPlayer = state.getNextPlayer();
+    public void applyEffect(Game game) {
+        Player nextPlayer = game.getNextPlayer();
         for (int i = 0; i < 2; i++) {
-            nextPlayer.draw(state.drawCard());
+            nextPlayer.draw(game.drawCard());
         }
-        state.skipNextPlayer();
-        state.getDisplay().logCardDrawn(nextPlayer, 2);
+        game.skipNextPlayer();
+        game.getDisplay().logCardDrawn(nextPlayer, 2);
     }
-} 
+}

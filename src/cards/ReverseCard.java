@@ -2,7 +2,7 @@ package cards;
 
 import constants.Action;
 import constants.Color;
-import game.GameState;
+import game.Game;
 
 // Reverses the direction of play
 public class ReverseCard extends ActionCard {
@@ -11,8 +11,8 @@ public class ReverseCard extends ActionCard {
     }
 
     @Override
-    public void applyEffect(GameState state) {
-        state.reverseDirection();
-        state.getDisplay().logActionEffect("", "Direction reversed.");
+    public void applyEffect(Game game) {
+        game.reverseDirection();
+        game.getDisplay().logActionEffect("", "Direction reversed.");
     }
 } 

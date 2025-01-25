@@ -2,7 +2,8 @@ package cards;
 
 import constants.Action;
 import constants.Color;
-import game.GameState;
+import game.Game;
+import player.Player;
 
 // Skips the next player's turn
 public class SkipCard extends ActionCard {
@@ -11,8 +12,9 @@ public class SkipCard extends ActionCard {
     }
 
     @Override
-    public void applyEffect(GameState state) {
-        state.skipNextPlayer();
-        state.getDisplay().logActionEffect(state.getNextPlayer().getName(), "was skipped.");
+    public void applyEffect(Game game) {
+        Player nextPlayer = game.getNextPlayer();
+        game.skipNextPlayer();
+        game.getDisplay().logActionEffect(nextPlayer.getName(), "was skipped.");
     }
-} 
+}

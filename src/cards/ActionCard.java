@@ -2,7 +2,7 @@ package cards;
 
 import constants.Action;
 import constants.Color;
-import game.GameState;
+import game.Game;
 
 // Base class for all action cards (Skip, Reverse, Draw2, Draw4)
 // Each action card type implements its own effect
@@ -17,7 +17,7 @@ public abstract class ActionCard extends Card {
 
     // Abstract method that each action card must implement
     // Defines how the card affects game state
-    public abstract void applyEffect(GameState state);
+    public abstract void applyEffect(Game game);
 
     @Override
     public String toString() {

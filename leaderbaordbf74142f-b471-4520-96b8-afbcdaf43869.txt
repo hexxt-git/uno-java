@@ -1,0 +1,2 @@
+boot 5
+salah 5
