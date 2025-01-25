@@ -1,3 +1,0 @@
-wail 5
-hmd 5
-mohamed -10
